@@ -1,0 +1,46 @@
+# Coding Standard
+Mainly follows Google's Python3 coding style sheet (https://zh-google-styleguide.readthedocs.io/en/latest/google-python-styleguide/python_style_rules/), except for the following scenes:
+
+1. Format of an entry in Attributes, Args and Returns in docstrings are a bit different. Here is an example to follow:
+```python
+class Regex(object):
+    """Class of a Regular Expression.
+
+    Only supports single-char symbols in alphabet! Concatenations are
+    represented with '-'. End symbol '#' will be added in EXPR, but will not
+    be in ALPHABET. Binary syntax tree will be generated and position numbers
+    will be marked.
+
+    Notice that '~' is regarded as epsilon here, and will not get a position
+    number during the marking process. That also means we cannot use `~` as a
+    normal char symbol like 'a' / '0' in the input alphabet.
+
+    Attributes:
+        expr     - str , RE expression with concatenations as '-'
+        tree     - Node, binary syntax tree of RE
+        alphabet - list, alphabet in sorted order
+        index    - dict, table recording pos number-symbol pairs
+    """
+
+    def __init__(self, input_re_string):
+        ...
+```
+2. Necessary vertical aligns are needed for prettier looking. Sorry for my rigidness, but hope you can withstand.
+```python
+if i in followpos:
+    followpos[i] |= firstpos(node.left)
+else:
+    followpos[i]  = firstpos(node.left)
+```
+3. Better naming standard. Details are as follows:
+    - Variables:   `new_var_name`
+    - Class names: `Regex(object)`
+    - Functions:   `doThisOperation()`
+
+# TODOs
+Mark your TODO tasks with a comment like `# TODO(name): balabala` in the corresponding position in the code.
+
+1. DFA minimizing
+2. Testing correctness of exiting functions
+3. GUI presentation
+4. Extended regex operators
