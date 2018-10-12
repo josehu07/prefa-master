@@ -1,7 +1,7 @@
 # Coding Standard
 Mainly follows Google's Python3 coding style sheet (https://zh-google-styleguide.readthedocs.io/en/latest/google-python-styleguide/python_style_rules/), except for the following scenes:
 
-1. Format of an entry in Attributes, Args and Returns in docstrings are a bit different. Here is an example to follow:
+- Format of an entry in Attributes, Args and Returns in docstrings are a bit different. Here is an example to follow:
 ```python
 class Regex(object):
     """Class of a Regular Expression.
@@ -25,14 +25,14 @@ class Regex(object):
     def __init__(self, input_re_string):
         ...
 ```
-2. Necessary vertical aligns are needed for prettier looking. Sorry for my rigidness, but hope you can withstand.
+- Necessary vertical aligns are needed for prettier looking. Sorry for my rigidness, but hope you can withstand.
 ```python
 if i in followpos:
     followpos[i] |= firstpos(node.left)
 else:
     followpos[i]  = firstpos(node.left)
 ```
-3. Better naming standard. Details are as follows:
+- Better naming standard. Details are as follows:
     - Variables:   `new_var_name`
     - Class names: `Regex(object)`
     - Functions:   `doThisOperation()`

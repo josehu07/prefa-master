@@ -35,13 +35,37 @@ NOT AVAILABLE NOW
 
 ## Tutorial
 
+#### Prerequisites
+- In Regular Expression strings, `~` represents epsilon and SHOULD NOT be used as a normal char symbol.
+- A *minus* symbol `-` is used to represent a *Concatenation*, and a `#` is used as an end symbol.
+- A Finite Automata source file follows the following format (like a transition table):
+    - First row title line is also the alphabet, `~` colomn is optional.
+    - First title column is also the states set.
+    - Every inner line gives the `move` set from a state, when input is a char symbol:
+        - `-` means empty transition.
+        - Single transition do not need `{}`s.
+        - Multi transitions are recommended to have `{}`s.
+    - State attributes can appear at the end of every line:
+        - Empty means no special attributes.
+        - `i` means *Initial*.
+        - `a` means *Accepting* (There can be multiple accepting states).
+        - `ia` can appear simultaneously, meaning *Initial & Accepting*.
+```
+           a        b        c        ~ 
+q0         -        -        -  {q1,q2}   i
+q1        q1  {q2,q3}        -        -   
+q2   {q1,q3}       q2        -        -   
+q3         -        -       q3        -   a
+```
+- DFA Minimizing, FA GUI displaying and simulation, & Extended RE operators are not yet supported :(
+
 #### Use as Python Library
 This *pREFA* package can be imported as name `prefa`, and it contains the following modules:
 
 1. `re`: Basic Regular Expressions
 2. `fa`: Finite Automata prototype
-3. `dfa`: Determinstic Finite Automata construction
-4. `nfa`: Non-determinstic Finite Automata construction
+3. `dfa`: Deterministic Finite Automata construction
+4. `nfa`: Non-deterministic Finite Automata construction
 
 To construct a Regular Expression from a string, and display its structure, do:
 ```python
@@ -76,7 +100,7 @@ q3         -        -       q3        -   a
 
 ```
 
-To generate a Non-determinstic Finite Automata, you can do so from a source file, or a Regular Expression:
+To generate a Non-deterministic Finite Automata, you can do so from a source file, or a Regular Expression:
 ```python
 >>> from prefa import nfa
 >>> my_nfa = nfa.NFiniteAutomata('input/NFA')
@@ -100,7 +124,7 @@ sf         -        -        -        -        -   a
 
 ```
 
-To generate a Determinstic Finite Automata, you can do so from a source file, or a Regular Expression, or an `NFiniteAutomata` instance (here happens NFA $\rightarrow$ DFA conversion):
+To generate a Deterministic Finite Automata, you can do so from a source file, or a Regular Expression, or an `NFiniteAutomata` instance (here happens NFA $\rightarrow$ DFA conversion):
 ```python
 >>> from prefa import dfa
 >>> my_dfa = dfa.DFiniteAutomata('input/DFA')
