@@ -44,3 +44,29 @@ Mark your TODO tasks with a comment like `# TODO(name): balabala` in the corresp
 2. Testing correctness of exiting functions
 3. GUI presentation
 4. Extended regex operators
+
+# How to upload to *Pypi*
+Install `setuptools` and `twine` libraries through `pip3`:
+```bash
+sudo pip3 install setuptools
+sudo pip3 install twine
+```
+
+Install `twine` from `apt`:
+```bash
+sudo apt install twine
+```
+
+Update version and develop status infos in `setup.py`, since any upload must issue a version update, or a name-race will happen.
+
+Build the distribution package into `.whl` wheel by:
+```bash
+python3 setup.py bdist_wheel
+```
+
+Upload through `twine`, into account `Jose`:
+```bash
+twine upload dist/*
+Enter your username: Jose
+Enter your password: # PASSWORD:)
+```
