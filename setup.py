@@ -6,7 +6,7 @@ setup (
     author = 'Jose, Robert & King',
     author_email = "huguanzhou123@sina.com",
     description = 'Presentation tool for Regular Expressions and Finite Automatas',
-    url = 'https://github.com/hgz12345ssdlh/prefa',
+    url = 'https://github.com/hgz12345ssdlh/prefa-master',
     packages = ['prefa'],
     classifiers = [
         'Development Status :: 2 - Pre-Alpha',

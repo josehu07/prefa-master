@@ -40,7 +40,7 @@ else:
 # TODOs
 Mark your TODO tasks with a comment like `# TODO(name): balabala` in the corresponding position in the code.
 
-1. DFA minimizing
+1. DFA minimizing & FA simulation on inputs
 2. Testing correctness of exiting functions
 3. GUI presentation
 4. Extended regex operators
@@ -57,7 +57,7 @@ Install `twine` from `apt`:
 sudo apt install twine
 ```
 
-Update version and develop status infos in `setup.py`, since any upload must issue a version update, or a name-race will happen.
+Move into the project directory, i.e. `prefa-master/`. Update version and develop status infos in `setup.py`, since any upload must issue a version update, or a name-race will happen.
 
 Build the distribution package into `.whl` wheel by:
 ```bash
