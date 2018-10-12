@@ -15,7 +15,7 @@ Presentation tool for Regular Expressions and Finite Automatas.
     - Show an FA in the form of pretty formatted transition table
 
 #### Current Version
-[ ver 0.0.1 ]
+[ ver 0.0.2 ]
 
 #### Authors
 - Authors: Jose, Robert & King
