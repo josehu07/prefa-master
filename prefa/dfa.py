@@ -42,7 +42,7 @@ class DFiniteAutomata(fa.FiniteAutomata):
                 node - Node, current root node
 
             Returns:
-                bool, True iff nullable, else False
+                Bool, True iff nullable, else False
             """
             if node.value == '~' or node.value == '*':
                 return True
@@ -50,7 +50,7 @@ class DFiniteAutomata(fa.FiniteAutomata):
                 return False
             elif node.value == '-':
                 return nullable(node.left) and nullable(node.right)
-            elif node.value == '+':
+            elif node.value == '|':
                 return nullable(node.left) or  nullable(node.right)
 
         def firstpos(node):
@@ -72,7 +72,7 @@ class DFiniteAutomata(fa.FiniteAutomata):
                 if nullable(node.left):
                     return firstpos(node.left) | firstpos(node.right)
                 return firstpos(node.left)
-            elif node.value == '+':
+            elif node.value == '|':
                 return firstpos(node.left) | firstpos(node.right)
 
         def lastpos(node):
@@ -94,7 +94,7 @@ class DFiniteAutomata(fa.FiniteAutomata):
                 if nullable(node.right):
                     return lastpos(node.left) | lastpos(node.right)
                 return lastpos(node.right)
-            elif node.value == '+':
+            elif node.value == '|':
                 return lastpos(node.left) | lastpos(node.right)
 
         # Do a DFS traverse from root node, calculate followpos table for
@@ -287,11 +287,11 @@ if __name__ == '__main__':
     print(DFiniteAutomata('../input/DFA'))
     print(DFiniteAutomata(nfa.NFiniteAutomata('../input/NFA')))
 
-    rexpr = re.Regex('(a+~)*b*a+ba')
+    rexpr = re.Regex('(a|~)*b*a|ba')
     print(rexpr)
     print(DFiniteAutomata(rexpr))
 
     min_DFA = DFiniteAutomata(rexpr).minimalDFA()
     print(min_DFA)
-    print(min_DFA.simulate('aabbbaba'))
-    print(min_DFA.simulate('aaaabbbbba'))
+    print(min_DFA.simulate('aabbbaba', verbose=True))
+    print(min_DFA.simulate('aaaabba'))

@@ -39,6 +39,7 @@ class FiniteAutomata(object):
             input_file - str, input source file name (/ path)
         """
 
+        # TODO(jose): Check correctness of input source file.
         # Open the source file, and read in the first title line, which is
         # also the alphabet.
         f = open(input_file)
@@ -150,7 +151,7 @@ class FiniteAutomata(object):
                         stack.append(v)
         return closure
 
-    def simulate(self, string):
+    def simulate(self, input_str, verbose=False):
         """Simulate the checking process on a given string.
 
         Goes through the automata and performs the checking process on the
@@ -158,25 +159,25 @@ class FiniteAutomata(object):
         it will produce a result whether the string is accepted or not.
 
         Args:
-            string - str, the string to check
+            input_str - str, the string to check
 
         Returns:
             Bool, True if accepted, False otherwise.
         """
-        cur_set, count = self.epsClosure(self.initial), 0
-        for c in string:
-            print('%2d:' % count, cur_set, '--%c->' % c)
-            cur_set = self.move(cur_set, c)
-            if len(cur_set) == 0:
-                break
+        cur_set, count = stateSet(self.epsClosure(self.initial)), 0
+        output_str = '%3d:       ' % 0 + str(cur_set) + '\n'
+        for c in input_str:
+            cur_set = stateSet(self.move(cur_set, c))
             count += 1
+            if len(cur_set) == 0:
+                output_str += '%3d: --%c-> ' % (count, c) + 'ERROR\n'
+                break
+            output_str += '%3d: --%c-> ' % (count, c) + str(cur_set) + '\n'
+        if verbose:
+            print(output_str)
         if len(cur_set & self.acceptings) > 0:
-            print('%2d:' % count, cur_set)
-            print('String %r is accepted :)' % string)
             return True
-        else:
-            print('String %r is rejected :(' % string)
-            return False
+        return False
 
 class stateSet(set):
     """Class which reloads the str() function for type Set.
@@ -205,4 +206,3 @@ if __name__ == '__main__':
     print(fa.move({'q0', 'q1'}, 'b'))
 
     print(FiniteAutomata('../input/DFA'))
-

@@ -110,10 +110,10 @@ class NFiniteAutomata(fa.FiniteAutomata):
                 table_l['sf'] = table_r['sf']
                 return table_l, count
 
-            # Meet '+' node, then merge the two initial nodes and two
+            # Meet '|' node, then merge the two initial nodes and two
             # accepting nodes from left and right child. States in right child
             # are also renamed and inserted into elft child.
-            elif node.value == '+':
+            elif node.value == '|':
                 table_l, count_l = calcTable(node.left)
                 table_r, count_r = calcTable(node.right)
                 for s in table_r:   # Update old names in right child
@@ -138,7 +138,6 @@ class NFiniteAutomata(fa.FiniteAutomata):
                         table_l['sf'][a] = table_r['sf'][a]
                 return table_l, count_l
 
-
         # Generate and complete table at root recursively, then collects all
         # other fields.
         self.alphabet = input_regex.alphabet
@@ -153,6 +152,6 @@ class NFiniteAutomata(fa.FiniteAutomata):
 if __name__ == '__main__':
     print(NFiniteAutomata('../input/NFA'))
     
-    rexpr = re.Regex('(a+~)bc*')
+    rexpr = re.Regex('(a|~)bc*')
     print(rexpr)
     print(NFiniteAutomata(rexpr))

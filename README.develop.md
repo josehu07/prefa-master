@@ -40,10 +40,9 @@ else:
 # TODOs
 Mark your TODO tasks with a comment like `# TODO(name): balabala` in the corresponding position in the code.
 
-1. DFA minimizing & FA simulation on inputs
+1. GUI presentation
 2. Testing correctness of exiting functions
-3. GUI presentation
-4. Extended regex operators
+3. Error checking routines
 
 # How to upload to *Pypi*
 Install `setuptools` and `twine` libraries through `pip3`:
@@ -68,5 +67,5 @@ Upload through `twine`, into account `Jose`:
 ```bash
 twine upload dist/prefa-[Version]-py3-none-any.whl
 Enter your username: Jose
-Enter your password: # PASSWORD:)
+Enter your password: # PASSWORD :)
 ```
