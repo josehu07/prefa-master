@@ -18,7 +18,7 @@ Presentation tool for Regular Expressions and Finite Automatas.
     - Simulate the checking process on a given string, and get the result.
 
 ### Current Version
-[ ver 1.0.0 ]
+[ ver 1.1.0 ]
 
 ### Authors
 - Authors: Jose, Robert & King
