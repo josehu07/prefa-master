@@ -44,7 +44,7 @@ Notation | Meaning
 :-: | :-:
 `~` | Put an empty String here (epsilon)
 `a` | Put a character `a` here
-`r1|r2` | Either what `r1` or `r2` generates can appear here
+`r1`&#124;`r2` | Either what `r1` or `r2` generates can appear here
 `r1r2` | What `r1`'s generates concatenates with `r2`'s
 `r*` | *Kleen Closure* of what `r` generates
 
