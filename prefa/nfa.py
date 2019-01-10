@@ -141,6 +141,8 @@ class NFiniteAutomata(fa.FiniteAutomata):
         # Generate and complete table at root recursively, then collects all
         # other fields.
         self.alphabet = input_regex.alphabet
+        if '~' not in self.alphabet:
+            self.alphabet.append('~')
         self.table = calcTable(input_regex.tree)[0]
         for s in self.table:
             for a in self.alphabet:
@@ -155,3 +157,8 @@ if __name__ == '__main__':
     rexpr = re.Regex('(a|~)bc*')
     print(rexpr)
     print(NFiniteAutomata(rexpr))
+
+    my_nfa = NFiniteAutomata(re.Regex('[a-c]+b*|a'))
+    print(my_nfa)
+    print(my_nfa.simulate('acbabbb', verbose=True))
+    print(my_nfa.simulate('ad'))

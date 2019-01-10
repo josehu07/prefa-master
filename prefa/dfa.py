@@ -223,7 +223,7 @@ class DFiniteAutomata(fa.FiniteAutomata):
         """
 
         # Make a deep copy of self.
-        min_DFA = deepcopy(self)
+        min_dfa = deepcopy(self)
 
         # Conduct minimization by repeatedly partitioning the state groups.
         # Initially there are two groups, one containing all accepting
@@ -267,21 +267,21 @@ class DFiniteAutomata(fa.FiniteAutomata):
         for S in partition:
             state_dict['S'+str(count)] = S
             count += 1
-        min_DFA.acceptings, min_DFA.states = set(), []
+        min_dfa.acceptings, min_dfa.states = set(), []
         for s in state_dict:
-            min_DFA.table[s] = dict([(a, set()) for a in self.alphabet])
+            min_dfa.table[s] = dict([(a, set()) for a in self.alphabet])
             if self.initial in state_dict[s]:
-                min_DFA.initial = s
+                min_dfa.initial = s
             if len(self.acceptings & state_dict[s]) > 0:
-                min_DFA.acceptings.add(s)
+                min_dfa.acceptings.add(s)
             for a in self.alphabet:
                 for s_end in state_dict:
                     if len(self.table[list(state_dict[s])[0]][a] & \
                        state_dict[s_end]) > 0:
-                        min_DFA.table[s][a] = {s_end}
+                        min_dfa.table[s][a] = {s_end}
                         break
-        min_DFA.states = sorted(list(state_dict.keys()))
-        return min_DFA
+        min_dfa.states = sorted(list(state_dict.keys()))
+        return min_dfa
 
 if __name__ == '__main__':
     print(DFiniteAutomata('../input/DFA'))
@@ -291,7 +291,7 @@ if __name__ == '__main__':
     print(rexpr)
     print(DFiniteAutomata(rexpr))
 
-    min_DFA = DFiniteAutomata(rexpr).minimalDFA()
-    print(min_DFA)
-    print(min_DFA.simulate('aabbbaba', verbose=True))
-    print(min_DFA.simulate('aaaabba'))
+    min_dfa = DFiniteAutomata(rexpr).minimalDFA()
+    print(min_dfa)
+    print(min_dfa.simulate('aabbbaba', verbose=True))
+    print(min_dfa.simulate('aaaabba'))

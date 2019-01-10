@@ -172,7 +172,7 @@ class FiniteAutomata(object):
                 output_str += '%3d: --%c-> ' % (count, c) + 'ERROR\n'
                 unknown_char_flag = True
                 break
-            cur_set = stateSet(self.move(cur_set, c))
+            cur_set = stateSet(self.epsClosure(self.move(cur_set, c)))
             count += 1
             if len(cur_set) == 0:
                 output_str += '%3d: --%c-> ' % (count, c) + 'ERROR\n'
