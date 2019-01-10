@@ -40,25 +40,25 @@ Then you can `import` and use this package in *Python3*.
 #### RE Specifications
 Normal Regular Expressions follow these specifications:
 
-Notation | Use Here | Meaning | Describes Language ...
-:-: | :-: | :-: | :-:
-$\varepsilon$ | `~` | Put an empty String here | $L(\varepsilon) = \{\text{`'}\}$
-$a$ | `a` | Put a character `a` here | $L(a) = \{\text{`a'}\}$
-$r_1 + r_2$ | `r1|r2` | Either what $r_1$ or $r_2$ generates can appear here | $L(r_1 + r_2) = L(r_1) \cup L(r_2)$
-$r_1 r_2$ | `r1r2` | What $r_1$ generates concatenates with $r_2$'s | $L(r_1 r_2) = L(r_1) L(r_2)$
-$r^*$ | `r*` | *Kleen Closure* of what $r$ generates | $L(r^*) = (L(r))^*$
+Notation | Meaning
+:-: | :-:
+`~` | Put an empty String here (epsilon)
+`a` | Put a character `a` here
+`r1|r2` | Either what `r1` or `r2` generates can appear here
+`r1r2` | What `r1`'s generates concatenates with `r2`'s
+`r*` | *Kleen Closure* of what `r` generates
 
 The following Extended Regular Expression notation shorthands are also supported:
 
-Notation | Use Here | Meaning | Notes
-:-: | :-: | :-: | :-:
-$[a-zA-Z]$ | `[a-zA-Z]` | Anyone in range $[a, z]$ or $[A, Z]$ | $=a + \cdots + Z$
-$r^+$ | `r+` | *Positive Closure* of what $r$ generates | $= r (r)^*$
-$r ?$ | `r?` | What $r$ generates appear once or not | $= r + \varepsilon$
+Notation | Meaning | Notes
+:-: | :-: | :-:
+`[a-zA-Z]` | Anyone in range [a, z] or [A, Z] | = `a|...|Z`
+`r+` | *Positive Closure* of what r generates | = `r(r)*`
+`r?` | What r generates appear once or not | = `r|~`
 
 > **All keyword characters (i.e. `~|()[]-+?*`) CANNOT be used as a character in the alphabet. Any other single character will be considered as a valid character.**
 
-The precedence of RE symbols are: `?` $=$ `*` $=$ `+` $>$ *Concatenation* $>$ `|`. All binary-connection symbols are *Left-associative*.
+The precedence of RE symbols are: `?` = `*` = `+` > *Concatenation* > `|`. All binary-connection symbols are *Left-associative*.
 
 #### FA Source Format
 A Finite Automata source file follows the following transition table format:
