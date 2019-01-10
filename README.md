@@ -50,11 +50,11 @@ Notation | Meaning
 
 The following Extended Regular Expression notation shorthands are also supported:
 
-Notation | Meaning | Notes
-:-: | :-: | :-:
-`[a-zA-Z]` | Anyone in range [a, z] or [A, Z] | = `a|...|Z`
-`r+` | *Positive Closure* of what r generates | = `r(r)*`
-`r?` | What r generates appear once or not | = `r|~`
+Notation | Meaning
+:-: | :-:
+`[a-zA-Z]` | Anyone in range [a, z] or [A, Z]
+`r+` | *Positive Closure* of what r generates
+`r?` | What r generates appear once or not
 
 > **All keyword characters (i.e. `~|()[]-+?*`) CANNOT be used as a character in the alphabet. Any other single character will be considered as a valid character.**
 
