@@ -1,5 +1,5 @@
-from prefa.fa import FiniteAutomata     # FA prototype
-from prefa.re import Regex              # Regular expression class
+from fa import FiniteAutomata     # FA prototype
+from re import Regex              # Regular expression class
 
 class NFiniteAutomata(FiniteAutomata):
     """Non-determinsitic Finite Automata child class.
@@ -18,7 +18,6 @@ class NFiniteAutomata(FiniteAutomata):
     """
 
     def __init__(self, input):
-        # TODO(jose): Error checking
         if type(input) == str:      # 1. Input from source file
             self._initFromFile(input)
         else:                       # 2. Input from a regex

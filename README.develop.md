@@ -48,8 +48,8 @@ Mark your TODO tasks with a comment like `# TODO(name): balabala` in the corresp
 # How to upload to *Pypi*
 Install `setuptools` and `twine` libraries through `pip3`:
 ```bash
-sudo pip3 install setuptools
-sudo pip3 install twine
+pip3 install setuptools
+pip3 install twine
 ```
 
 Install `twine` from `apt`:

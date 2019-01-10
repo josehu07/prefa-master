@@ -1,6 +1,7 @@
-from prefa.fa import FiniteAutomata     # FA prototype
-from prefa.nfa import NFiniteAutomata   # NFA class
-from prefa.re import Regex              # Regular Expression class
+from fa import FiniteAutomata     # FA prototype
+from nfa import NFiniteAutomata   # NFA class
+from re import Regex              # Regular Expression class
+from copy import deepcopy
 
 class DFiniteAutomata(FiniteAutomata):
     """Determinstic Finite Automata child class.
@@ -11,14 +12,13 @@ class DFiniteAutomata(FiniteAutomata):
 
     Attributes:
         initial    - str , the initial state
-        acceptings - set , set of acccepting states
+        acceptings - set , set of accepting states
         table      - dict, the transition table
         alphabet   - list, alphabet in sorted order
         states     - list, list of all states in sorted order
     """ 
 
     def __init__(self, input):
-        # TODO(jose): Error checking
         if type(input) == str:                  # 1. Input from source file
             self._initFromFile(input)
         elif type(input) == NFiniteAutomata:    # 2. Input from NFA convertion
@@ -53,9 +53,6 @@ class DFiniteAutomata(FiniteAutomata):
                 return nullable(node.left) and nullable(node.right)
             elif node.value == '+':
                 return nullable(node.left) or  nullable(node.right)
-            else:
-                # TODO(jose): Error checking
-                pass
 
         def firstpos(node):
             """Which positions can be first in sub-regex rooted at NODE?
@@ -78,9 +75,6 @@ class DFiniteAutomata(FiniteAutomata):
                 return firstpos(node.left)
             elif node.value == '+':
                 return firstpos(node.left) | firstpos(node.right)
-            else:
-                # TODO(jose): Error checking
-                pass
 
         def lastpos(node):
             """Which positions can be last in sub-regex rooted at NODE?
@@ -103,9 +97,6 @@ class DFiniteAutomata(FiniteAutomata):
                 return lastpos(node.right)
             elif node.value == '+':
                 return lastpos(node.left) | lastpos(node.right)
-            else:
-                # TODO(jose): Error checking
-                pass
 
         # Do a DFS traverse from root node, calculate followpos table for
         # every position number. FOLLOWPOS will be stored as a dict.
@@ -214,10 +205,84 @@ class DFiniteAutomata(FiniteAutomata):
                     self.table[name_U][a] = {name_V}
             marker += 1
 
+    def minimalDFA(self):
+        """DFA minimization.
+
+        Produces a minimized DFA which is equivalent to the original one, by
+        the method of group partitioning. Will return a minimized copy
+        instead of modifying itself.
+
+        Returns:
+            DFiniteAutomata, which is the minimized one.
+        """
+
+        # Make a deep copy of self.
+        min_DFA = deepcopy(self)
+
+        # Conduct minimization by repeatedly partitioning the state groups.
+        # Initially there are two groups, one containing all accepting
+        # states and another containing all other states. Then, iterate over
+        # all the groups and split that group into smaller ones according to
+        # their transtions.
+        partition = [self.acceptings, set(self.states)-self.acceptings]
+        while True:
+            change_flag = False
+            new_partition = []
+            for group in partition:
+                dest = dict([(s, dict([(a, self.move(s, a))
+                       for a in self.alphabet])) for s in group])
+                same = dict([(s, dict([(s, True)
+                       for s in group])) for s in group])
+                marked = dict([(s, False) for s in group])
+                for s1 in group:        # Pass 1, judge whether in same group
+                    for s2 in group:    # for every pair of states in group.
+                        for a in self.alphabet:
+                            for check_group in partition:
+                                if len(dest[s1][a] & check_group) != \
+                                   len(dest[s2][a] & check_group):
+                                    same[s1][s2] = False
+                                    change_flag = True
+                                    break
+                for s1 in group:        # Pass 2, extract sub-groups and then
+                    if not marked[s1]:  # add into the new partition.
+                        new_group = set()
+                        for s2 in group:
+                            if not marked[s2] and same[s1][s2]:
+                                marked[s2] = True
+                                new_group.add(s2)
+                        new_partition.append(new_group)
+            partition = new_partition
+            if not change_flag:
+                break
+
+        # Generate updated transtion table and states information for the
+        # minimized DFA, then return this minimized copy.
+        state_dict, count = {}, 0
+        for S in partition:
+            state_dict['S'+str(count)] = S
+            count += 1
+        min_DFA.acceptings, min_DFA.states = set(), []
+        for s in state_dict:
+            min_DFA.table[s] = dict([(a, set()) for a in self.alphabet])
+            if self.initial in state_dict[s]:
+                min_DFA.initial = s
+            if len(self.acceptings & state_dict[s]) > 0:
+                min_DFA.acceptings.add(s)
+            for a in self.alphabet:
+                for s_end in state_dict:
+                    if len(self.table[list(state_dict[s])[0]][a] & \
+                       state_dict[s_end]) > 0:
+                        min_DFA.table[s][a] = {s_end}
+                        break
+        min_DFA.states = sorted(list(state_dict.keys()))
+        return min_DFA
+
 if __name__ == '__main__':
     print(DFiniteAutomata('../input/DFA'))
     print(DFiniteAutomata(NFiniteAutomata('../input/NFA')))
 
-    re = Regex('(a+~)bc*')
+    re = Regex('ab(b*)*(a+b)*a*b')
     print(re)
     print(DFiniteAutomata(re))
+
+    print(DFiniteAutomata(re).minimalDFA())

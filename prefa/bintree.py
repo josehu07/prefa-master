@@ -93,7 +93,6 @@ class Node(object):
     """
 
     def __init__(self, value, left=None, right=None):
-        # TODO(jose): Args error checking
         self.value = value
         self.left  = left
         self.right = right

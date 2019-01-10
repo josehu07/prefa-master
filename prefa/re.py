@@ -1,4 +1,4 @@
-from prefa.bintree import Node  # Binary tree data structure
+from bintree import Node  # Binary tree data structure
 
 class Regex(object):
     """Class of a Regular Expression.
@@ -50,14 +50,15 @@ class Regex(object):
         self.ori_expr, self.expr = input_re_string, ''
         self.alphabet = []
         for c in input_re_string:
-            if c not in '()+*':     # True iff c is a symbol
-                if c not in self.alphabet:
-                    self.alphabet.append(c)
-                if len(self.expr) > 0 and self.expr[-1] not in '(+':
+            if c not in '()+*' and c not in self.alphabet:
+                self.alphabet.append(c)
+            if c not in ')+*' and len(self.expr) > 0 and \
+               self.expr[-1] not in '(+':
                     self.expr += '-'
             self.expr += c
-        self.expr += '-#'
-        # TODO(jose): Modify sort, let 'q2' < 'q10'
+        if len(self.expr) > 0:
+            self.expr += '-'
+        self.expr += '#'
         self.alphabet.sort()
 
         # Construct binary syntax tree for RE. Overall process is just like
@@ -79,22 +80,18 @@ class Regex(object):
                 while operator_stack[-1] != '(':
                     doOperation(operator_stack, operand_stack)
                 operator_stack.pop()
-            else:
-                # TODO(jose): Error checking
-                pass
         while len(operator_stack) > 0:
             doOperation(operator_stack, operand_stack)
-        # TODO(jose): Error checking
         self.tree = operand_stack.pop()
         self.index = self.tree._markLeafPos()
 
     def __str__(self):
-        # TODO(jose): Prettier format
-        return self.expr + str(self.tree)
+        return 'RE Expr: ' + self.expr + str(self.tree)
 
     def __repr__(self):
         return 'Regex({})'.format(self.expr)
 
 if __name__ == '__main__':
+    print(Regex('(~+a)bc*e'))
     print(Regex('(a+e)bc*'))
     print([Regex('a+c'), Regex('(0+1)*')])

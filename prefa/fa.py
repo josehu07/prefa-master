@@ -43,7 +43,6 @@ class FiniteAutomata(object):
         # also the alphabet.
         f = open(input_file)
         self.alphabet = f.readline().split()
-        # TODO(jose): Modify sort, let 'q2' < 'q10'
         self.alphabet.sort()
 
         # Read in the transition table line by line, and store it as a dict.
@@ -108,16 +107,18 @@ class FiniteAutomata(object):
         """Performs a transition move.
 
         From the initial state set S, given an input char symbol A, calculates
-        the destination set that we can go to.
+        the destination set that we can go to. For DFA, input can be a single
+        state string.
 
         Args:
-            S - set, set of states to start from
-            a - str, a char symbol in alphabet
+            S - set or str, states to start from
+            a - str       , a char symbol in alphabet
 
         Returns:
             S_move - set, set of states that are moved to
         """
-        # TODO(jose): Error checking
+        if type(S) == str:
+            S = {S}
         S_move = set()
         for s in S:
             S_move |= self.table[s][a]
