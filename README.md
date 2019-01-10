@@ -75,8 +75,7 @@ A Finite Automata source file follows the following transition table format:
       - `a` means *Accepting* (There can be multiple accepting states).
       - `ia` can appear simultaneously, meaning *Initial & Accepting*.
 
-```bash
-# FA source file format (also the transition table output format)
+```
            a        b        c        ~ 
 q0         -        -        -  {q1,q2}   i
 q1        q1  {q2,q3}        -        -   
@@ -94,7 +93,7 @@ This *pREFA* package can be imported as name `prefa`, and it contains the follow
 
 #### Regular Expressions
 To construct a Regular Expression from a string, and display its structure, do:
-```python
+```
 >>> from prefa import re
 >>> rexpr = re.Regex('(~|a)bc*e')
 >>> print(rexpr)
@@ -131,7 +130,7 @@ Augmented: (a-(a)*-((a|~)|~)-((0|1|2)|~))-#
 
 #### NFAs
 To generate a Non-deterministic Finite Automata and show its transition table, you can do so from a source file, or a `Regex` instance:
-```python
+```
 >>> from prefa import nfa
 >>> my_nfa = nfa.NFiniteAutomata('input/NFA')
 >>> print(my_nfa)
@@ -156,7 +155,7 @@ sf         -        -        -        -        -   a
 
 #### DFAs
 To generate a Deterministic Finite Automata and show its transition table, you can do so from a source file, a `Regex` instance, or an `NFiniteAutomata` instance (here happens NFA to DFA conversion):
-```python
+```
 >>> from prefa import dfa
 >>> my_dfa = dfa.DFiniteAutomata('input/DFA')
 >>> print(my_dfa)
@@ -189,7 +188,7 @@ S4    -   -   -   -   a
 
 #### DFA Minimization
 To minimize a DFA, do:
-```python3
+```
 >>> my_dfa = DFiniteAutomata(Regex('(a|~)*b*a|ba'))
 >>> min_dfa = my_dfa.minimalDFA()
 >>> print(min_dfa)
@@ -203,7 +202,7 @@ S3   S1  S2   i
 
 #### Check Simulation
 To simulate the checking process of a Finite Automata on a given input string, do (can simulate on both DFAs or NFAs):
-```python
+```
 >>> print(min_DFA.simulate('aaaabba'))
 True
 >>> result = min_DFA.simulate('aabbbaba', verbose=True)   # Set `verbose` to show details step by step
