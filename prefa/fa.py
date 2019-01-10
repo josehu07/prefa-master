@@ -166,7 +166,12 @@ class FiniteAutomata(object):
         """
         cur_set, count = stateSet(self.epsClosure(self.initial)), 0
         output_str = '%3d:       ' % 0 + str(cur_set) + '\n'
+        unknown_char_flag = False
         for c in input_str:
+            if c not in self.alphabet:
+                output_str += '%3d: --%c-> ' % (count, c) + 'ERROR\n'
+                unknown_char_flag = True
+                break
             cur_set = stateSet(self.move(cur_set, c))
             count += 1
             if len(cur_set) == 0:
@@ -175,7 +180,7 @@ class FiniteAutomata(object):
             output_str += '%3d: --%c-> ' % (count, c) + str(cur_set) + '\n'
         if verbose:
             print(output_str)
-        if len(cur_set & self.acceptings) > 0:
+        if not unknown_char_flag and len(cur_set & self.acceptings) > 0:
             return True
         return False
 
