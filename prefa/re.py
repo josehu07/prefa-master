@@ -1,4 +1,5 @@
-from bintree import Node  # Binary tree data structure
+from prefa import bintree
+# import bintree
 
 class Regex(object):
     """Class of a Regular Expression.
@@ -16,7 +17,7 @@ class Regex(object):
         expr     - str , RE expression with concatenations as '-'
         tree     - Node, binary syntax tree of RE
         alphabet - list, alphabet in sorted order
-        index    - dict, table recording pos number-symbol pairs
+        index    - dict, table recording posnumber-symbol pairs
     """
 
     def __init__(self, input_re_string):
@@ -34,11 +35,11 @@ class Regex(object):
             """
             op = operator_stack.pop()
             if op == '*':
-                node = Node(op)
+                node = bintree.Node(op)
                 node.left = operand_stack.pop()
                 operand_stack.append(node)
             elif op == '-' or op == '+':
-                node = Node(op)
+                node = bintree.Node(op)
                 node.right = operand_stack.pop()
                 node.left  = operand_stack.pop()
                 operand_stack.append(node)
@@ -57,7 +58,7 @@ class Regex(object):
                     self.expr += '-'
             self.expr += c
         if len(self.expr) > 0:
-            self.expr += '-'
+            self.expr = '(' + self.expr + ')-'
         self.expr += '#'
         self.alphabet.sort()
 
@@ -68,7 +69,7 @@ class Regex(object):
         operator_stack, operand_stack = [], []
         for c in self.expr:
             if c not in '()+*-':    # True iff c is a symbol
-                operand_stack.append(Node(c))
+                operand_stack.append(bintree.Node(c))
             elif c == '(':
                 operator_stack.append(c)
             elif c != ')':          # True iff c is '+' / '-' / '*'

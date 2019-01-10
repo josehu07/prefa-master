@@ -1,7 +1,7 @@
-from fa import FiniteAutomata     # FA prototype
-from re import Regex              # Regular expression class
+from prefa import fa, re
+# import fa, re
 
-class NFiniteAutomata(FiniteAutomata):
+class NFiniteAutomata(fa.FiniteAutomata):
     """Non-determinsitic Finite Automata child class.
     
     Can be initialized from a formatted source file or a Regular Expression.
@@ -150,32 +150,9 @@ class NFiniteAutomata(FiniteAutomata):
         self.states = sorted(self.table.keys())
         self.initial, self.acceptings = 's0', {'sf'}
 
-    def epsClosure(self, S):
-        """Calculates the epsilon closure.
-
-        From the set S, calculates all nodes that can be reached only by
-        epsilon transitions. The closure must also include the original state
-        set S. Uses a DFS traversal algorithm.
-
-        Args:
-            S set, set of states to calculate closure on
-
-        Returns:
-            closure - set, the epsilon closure of S
-        """
-        stack = list(S)
-        closure = S
-        while (len(stack) > 0):
-            u = stack.pop()
-            for v in self.table[u]['~']:
-                if v != '-' and v not in closure:
-                    closure.add(v)
-                    stack.append(v)
-        return closure
-
 if __name__ == '__main__':
     print(NFiniteAutomata('../input/NFA'))
     
-    re = Regex('(a+~)bc*')
-    print(re)
-    print(NFiniteAutomata(re))
+    rexpr = re.Regex('(a+~)bc*')
+    print(rexpr)
+    print(NFiniteAutomata(rexpr))

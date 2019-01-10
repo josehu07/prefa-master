@@ -1,9 +1,8 @@
-from fa import FiniteAutomata     # FA prototype
-from nfa import NFiniteAutomata   # NFA class
-from re import Regex              # Regular Expression class
+from prefa import fa, re, nfa
 from copy import deepcopy
+# import fa, re, nfa
 
-class DFiniteAutomata(FiniteAutomata):
+class DFiniteAutomata(fa.FiniteAutomata):
     """Determinstic Finite Automata child class.
 
     Can be initilaized from a formatted source file or a Regular Expression,
@@ -21,7 +20,7 @@ class DFiniteAutomata(FiniteAutomata):
     def __init__(self, input):
         if type(input) == str:                  # 1. Input from source file
             self._initFromFile(input)
-        elif type(input) == NFiniteAutomata:    # 2. Input from NFA convertion
+        elif type(input) == nfa.NFiniteAutomata:    # 2. Input from NFA convertion
             self._initFromNFA(input)
         else:                                   # 3. Input from a regex
             self._initFromRE(input)
@@ -102,29 +101,38 @@ class DFiniteAutomata(FiniteAutomata):
         # every position number. FOLLOWPOS will be stored as a dict.
         followpos = {}
         stack = [input_regex.tree]
+        stack[-1].visited = False
         while len(stack) > 0:
-            node = stack.pop()
-            if node.value == '-':
-                for i in lastpos(node.left):
-                    if i in followpos:
-                        followpos[i] |= firstpos(node.right)
-                    else:
-                        followpos[i]  = firstpos(node.right)
-            elif node.value == '*':
-                for i in lastpos(node.left):
-                    if i in followpos:
-                        followpos[i] |= firstpos(node.left)
-                    else:
-                        followpos[i]  = firstpos(node.left)
-            if node.right is not None:
-                stack.append(node.right)
-            if node.left is not None:
-                stack.append(node.left)
+            node = stack[-1]
+            if node.visited:
+                stack.pop()
+                if node.value == '-':
+                    for i in lastpos(node.left):
+                        if i in followpos:
+                            followpos[i] |= firstpos(node.right)
+                        else:
+                            followpos[i]  = firstpos(node.right)
+                elif node.value == '*':
+                    for i in lastpos(node.left):
+                        if i in followpos:
+                            followpos[i] |= firstpos(node.left)
+                        else:
+                            followpos[i]  = firstpos(node.left)
+            else:
+                if node.right is not None:
+                    stack.append(node.right)
+                    node.right.visited = False
+                if node.left is not None:
+                    stack.append(node.left)
+                    node.left.visited  = False
+                node.visited = True
 
         # Set and initialize the fields to prepare for construction.
         S0 = firstpos(input_regex.tree)
         DStates, marker, namer = [('S0', S0)], 0, 0
         self.alphabet = input_regex.alphabet
+        if '~' in self.alphabet:
+            self.alphabet.remove('~')
         self.table = {}
         self.states = []
         self.initial, self.acceptings = 'S0', set()
@@ -135,18 +143,18 @@ class DFiniteAutomata(FiniteAutomata):
         # this DFA state U.
         while (marker < len(DStates)):
             name_U, U = DStates[marker]
-            self.table[name_U] = {}
+            self.table[name_U] = dict([(a, set()) for a in self.alphabet])
             self.states.append(name_U)
             if '#' in [input_regex.index[i] for i in U]:    # True iff U is
                 self.acceptings.add(name_U)                 # accepting
             for a in self.alphabet:
                 V = set()
                 for pos in U:
+                    if pos not in followpos:
+                        followpos[pos] = set()
                     if input_regex.index[pos] == a:
                         V |= followpos[pos]
-                if len(V) == 0:
-                    self.table[name_U][a] = {'-'}
-                else:
+                if len(V) > 0:
                     name_V = None
                     for tup in DStates:     # Falls in iff V is in DStates
                         if len(tup[1] ^ V) == 0:
@@ -184,15 +192,13 @@ class DFiniteAutomata(FiniteAutomata):
         # this DFA state U.
         while (marker < len(DStates)):
             name_U, U = DStates[marker]
-            self.table[name_U] = {}
+            self.table[name_U] = dict([(a, set()) for a in self.alphabet])
             self.states.append(name_U)
             if len(U & input_nfa.acceptings) > 0:   # True iff U is accepting
                 self.acceptings.add(name_U)
             for a in self.alphabet:
                 V = input_nfa.epsClosure(input_nfa.move(U, a))
-                if len(V) == 0:
-                    self.table[name_U][a] = {'-'}
-                else:
+                if len(V) > 0:
                     name_V = None
                     for tup in DStates:     # Falls in iff V is in DStates
                         if len(tup[1] ^ V) == 0:
@@ -279,10 +285,13 @@ class DFiniteAutomata(FiniteAutomata):
 
 if __name__ == '__main__':
     print(DFiniteAutomata('../input/DFA'))
-    print(DFiniteAutomata(NFiniteAutomata('../input/NFA')))
+    print(DFiniteAutomata(nfa.NFiniteAutomata('../input/NFA')))
 
-    re = Regex('ab(b*)*(a+b)*a*b')
-    print(re)
-    print(DFiniteAutomata(re))
+    rexpr = re.Regex('(a+~)*b*a+ba')
+    print(rexpr)
+    print(DFiniteAutomata(rexpr))
 
-    print(DFiniteAutomata(re).minimalDFA())
+    min_DFA = DFiniteAutomata(rexpr).minimalDFA()
+    print(min_DFA)
+    print(min_DFA.simulate('aabbbaba'))
+    print(min_DFA.simulate('aaaabbbbba'))

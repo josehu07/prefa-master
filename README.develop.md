@@ -66,7 +66,7 @@ python3 setup.py bdist_wheel
 
 Upload through `twine`, into account `Jose`:
 ```bash
-twine upload dist/*
+twine upload dist/prefa-[Version]-py3-none-any.whl
 Enter your username: Jose
 Enter your password: # PASSWORD:)
 ```

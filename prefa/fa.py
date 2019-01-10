@@ -48,7 +48,7 @@ class FiniteAutomata(object):
         # Read in the transition table line by line, and store it as a dict.
         self.table = {}
         self.states = []
-        self.initial, self.acceptings = '-', set()
+        self.initial, self.acceptings = '', set()
         for raw_line in f.readlines():
             line = raw_line.split()
             if (len(line) < len(self.alphabet) + 1):
@@ -124,6 +124,60 @@ class FiniteAutomata(object):
             S_move |= self.table[s][a]
         return S_move
 
+    def epsClosure(self, S):
+        """Calculates the epsilon closure.
+
+        From the set S, calculates all nodes that can be reached only by
+        epsilon transitions. The closure must also include the original state
+        set S. Uses a DFS traversal algorithm.
+
+        Args:
+            S - set or str, states to calculate closure on
+
+        Returns:
+            closure - set, the epsilon closure of S
+        """
+        if type(S) == str:
+            S = {S}
+        stack = list(S)
+        closure = S
+        if '~' in self.alphabet:    # No need to compute for DFAs.
+            while (len(stack) > 0):
+                u = stack.pop()
+                for v in self.table[u]['~']:
+                    if v != '-' and v not in closure:
+                        closure.add(v)
+                        stack.append(v)
+        return closure
+
+    def simulate(self, string):
+        """Simulate the checking process on a given string.
+
+        Goes through the automata and performs the checking process on the
+        given string. Will print the whole process out, step by step. Also,
+        it will produce a result whether the string is accepted or not.
+
+        Args:
+            string - str, the string to check
+
+        Returns:
+            Bool, True if accepted, False otherwise.
+        """
+        cur_set, count = self.epsClosure(self.initial), 0
+        for c in string:
+            print('%2d:' % count, cur_set, '--%c->' % c)
+            cur_set = self.move(cur_set, c)
+            if len(cur_set) == 0:
+                break
+            count += 1
+        if len(cur_set & self.acceptings) > 0:
+            print('%2d:' % count, cur_set)
+            print('String %r is accepted :)' % string)
+            return True
+        else:
+            print('String %r is rejected :(' % string)
+            return False
+
 class stateSet(set):
     """Class which reloads the str() function for type Set.
 
@@ -146,9 +200,9 @@ class stateSet(set):
             return string
 
 if __name__ == '__main__':
-    nfa = FiniteAutomata('../input/NFA')
-    print(nfa.move({'q0', 'q1'}, 'c'))
-    print(nfa)
+    fa = FiniteAutomata('../input/NFA')
+    print(fa)
+    print(fa.move({'q0', 'q1'}, 'b'))
 
     print(FiniteAutomata('../input/DFA'))
 

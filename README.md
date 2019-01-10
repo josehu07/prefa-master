@@ -70,8 +70,8 @@ This *pREFA* package can be imported as name `prefa`, and it contains the follow
 To construct a Regular Expression from a string, and display its structure, do:
 ```python
 >>> from prefa import re
->>> regex = re.Regex('(~+a)bc*e')
->>> print(regex)
+>>> rexpr = re.Regex('(~+a)bc*e')
+>>> print(rexpr)
 RE Expr: (~+a)-b-c*-e-#
 
 Syntax Tree:
@@ -100,7 +100,7 @@ q1        q1  {q2,q3}        -        -
 q2   {q1,q3}       q2        -        -   
 q3         -        -       q3        -   a
 
->>> my_nfa = nfa.NFiniteAutomata(regex)     # `regex` is the RE from previous example
+>>> my_nfa = nfa.NFiniteAutomata(rexpr)     # `rexpr` is the RE from previous example
 >>> print(my_nfa)
            a        b        c        e        ~
 s0        s1        -        -        -       s1   i
@@ -126,7 +126,7 @@ S3   S3  S2   -
 S4    -   -  S4   a
 S5   S1  S5   -   
 
->>> my_dfa = dfa.DFiniteAutomata(regex)     # `regex` is the RE from previous example
+>>> my_dfa = dfa.DFiniteAutomata(rexpr)     # `rexpr` is the RE from previous example
 >>> print(my_dfa)
       a   b   c   e 
 S0   S1  S2   -   -   i

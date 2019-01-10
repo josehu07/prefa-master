@@ -93,11 +93,12 @@ class Node(object):
     """
 
     def __init__(self, value, left=None, right=None):
-        self.value = value
-        self.left  = left
-        self.right = right
-        self.pos   = None   # Set as None at initialization, but will recieve
-                            # a proper one when a Regex has been built on it
+        self.value   = value
+        self.visited = False
+        self.left    = left
+        self.right   = right
+        self.pos     = None   # Set as None at initialization, but will
+                              # receive a proper one when a Regex is built
 
     def __str__(self):
         lines = _buildTreeString(self, 0)[0]
