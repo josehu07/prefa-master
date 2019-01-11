@@ -1,6 +1,6 @@
-# from prefa import fa, ere, nfa
+from prefa import fa, ere, nfa
 from copy import deepcopy
-import fa, ere, nfa
+# import fa, ere, nfa
 
 class DFiniteAutomata(fa.FiniteAutomata):
     """Determinstic Finite Automata child class.

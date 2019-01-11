@@ -1,5 +1,5 @@
-# from prefa import fa, ere
-import fa, ere
+from prefa import fa, ere
+# import fa, ere
 
 class NFiniteAutomata(fa.FiniteAutomata):
     """Non-determinsitic Finite Automata child class.

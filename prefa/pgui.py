@@ -1,7 +1,7 @@
+from prefa import nfa, ere
 import networkx as nx
 import matplotlib.pyplot as plt
-# from prefa import nfa, ere
-import dfa, nfa, ere
+# import dfa, nfa, ere
 
 class FADrawer(object):
     """Class which serves displaying of Finite Automatas.
@@ -34,6 +34,10 @@ class FADrawer(object):
         self.Graph = nx.DiGraph()  # Use directed graph.
         self.Graph.add_nodes_from(self.state_list)
         self.Graph.add_edges_from(trans_list)
+        self.initial = input_fa.initial
+        self.acceptings = input_fa.acceptings
+        self.normals = [s for s in input_fa.states if s != self.initial \
+                          and s not in self.acceptings]
 
     def staticShow(self):
         """Plot the structure of a Finite Automata.
@@ -63,12 +67,25 @@ class FADrawer(object):
 
         # `NetworkX` package is really powerful!
         plt.figure(figsize=(16, 9))
-        nx.draw_networkx(self.Graph, pos=nx.kamada_kawai_layout(self.Graph),
-                         node_size=700, node_color='#ffffff',
-                         arrowstyle='-|>', arrowsize=15, width=0.9,
-                         edgecolors='#000000', edge_color='#000000')
+        nx.draw_networkx_nodes(self.Graph, nodelist=self.normals,
+                               pos=nx.kamada_kawai_layout(self.Graph),
+                               node_size=700, node_color='#ffffff',
+                               edgecolors='#000000')
+        nx.draw_networkx_nodes(self.Graph, nodelist=[self.initial],
+                               pos=nx.kamada_kawai_layout(self.Graph),
+                               node_size=700, node_color='#f0f0f0',
+                               edgecolors='#bbbbbb')
+        nx.draw_networkx_nodes(self.Graph, nodelist=self.acceptings,
+                               pos=nx.kamada_kawai_layout(self.Graph),
+                               node_size=800, node_color='#ffffff',
+                               edgecolors='#000000', linewidths=3)
+        nx.draw_networkx_labels(self.Graph,
+                                pos=nx.kamada_kawai_layout(self.Graph))
+        nx.draw_networkx_edges(self.Graph, arrowstyle='-|>', arrowsize=20,
+                               pos=nx.kamada_kawai_layout(self.Graph),
+                               width=0.9, edge_color='#000000')
         pos_dict = nx.draw_networkx_edge_labels(self.Graph, font_size=13,
-                         label_pos=0.38, pos=nx.kamada_kawai_layout(self.Graph))
+                        label_pos=0.38, pos=nx.kamada_kawai_layout(self.Graph))
         for edge in pos_dict:   # Tune properties for edge labels.
             pos_dict[edge].set_text(boreStr(self.trans_dict[edge[0]][edge[1]]))
             pos_dict[edge].set_rotation(pos_dict[edge].get_rotation()-93)

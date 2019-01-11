@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup (
     name = 'prefa',
-    version = '1.1.2',
+    version = '2.0.0',
     author = 'Jose, Robert & King',
     author_email = "huguanzhou123@sina.com",
     description = 'Presentation tool for Regular Expressions and Finite Automatas',
