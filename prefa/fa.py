@@ -166,7 +166,7 @@ class FiniteAutomata(object):
             while (len(stack) > 0):
                 u = stack.pop()
                 for v in self.table[u]['~']:
-                    if v != '-' and v not in closure:
+                    if v not in closure:
                         closure.add(v)
                         stack.append(v)
         return closure

@@ -19,7 +19,7 @@ Presentation tool for Regular Expressions and Finite Automatas.
     - **Display the FA structure in GUI automatically**.
 
 ### Current Version
-Beta: [ ver 2.2.0 ]
+Beta: [ ver 2.2.1 ]
 
 ### Authors
 - Authors: Jose, Robert & King
@@ -38,6 +38,7 @@ Notice that `prefa` requires dependency on the following packages:
 
 - `networkx` (Tested with ver 2.2)
 - `matplotlib.pyplot` (Tested with ver 3.0.1)
+- `numpy` (Tested with ver 1.15.3)
 
 ## Tutorial
 

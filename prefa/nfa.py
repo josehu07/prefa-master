@@ -38,8 +38,7 @@ class NFiniteAutomata(fa.FiniteAutomata):
 
             Recursively constructs the transition table by a traversal of the
             Regular Expression's binary syntax tree. Follows the Thompson's
-            construction method when building. The returned table is not full,
-            which means that empty transitions are not inserted as '-' yet.
+            construction method when building.
 
             Args:
                 node - Node, current root of a regex

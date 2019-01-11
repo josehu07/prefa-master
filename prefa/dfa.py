@@ -18,11 +18,11 @@ class DFiniteAutomata(fa.FiniteAutomata):
     """
 
     def __init__(self, input):
-        if type(input) == str:                  # 1. Input from source file
+        if type(input) == str:                   # 1. Input from source file
             self._initFromFile(input)
-        elif type(input) == nfa.NFiniteAutomata:    # 2. Input from NFA convertion
+        elif type(input) == nfa.NFiniteAutomata: # 2. Input from NFA convertion
             self._initFromNFA(input)
-        else:                                   # 3. Input from a regex
+        else:                                    # 3. Input from a regex
             self._initFromRE(input)
 
     def _initFromRE(self, input_regex):
@@ -177,12 +177,13 @@ class DFiniteAutomata(fa.FiniteAutomata):
             input_regex - str, input Regular Expression
         """
             
-        # Set and initialize the fields to prepare for construction.
-        S0 = input_nfa.epsClosure({input_nfa.initial})
+        # Set and initialize the fields to prepare for construction. Entirely
+        # copies the input NFA to avoid modifications on it.
+        S0 = input_nfa.epsClosure(input_nfa.initial)
         DStates, marker, namer = [('S0', S0)], 0, 0
         self.table = {}
         self.states = []
-        self.alphabet = input_nfa.alphabet
+        self.alphabet = deepcopy(input_nfa.alphabet)
         self.alphabet.remove('~')
         self.initial, self.acceptings = 'S0', set()
 
@@ -230,19 +231,20 @@ class DFiniteAutomata(fa.FiniteAutomata):
         # states and another containing all other states. Then, iterate over
         # all the groups and split that group into smaller ones according to
         # their transtions.
-        partition = [self.acceptings, set(self.states)-self.acceptings]
+        partition = [min_dfa.acceptings,
+                     set(min_dfa.states)-min_dfa.acceptings]
         while True:
             change_flag = False
             new_partition = []
             for group in partition:
-                dest = dict([(s, dict([(a, self.move(s, a))
-                       for a in self.alphabet])) for s in group])
+                dest = dict([(s, dict([(a, min_dfa.move(s, a))
+                       for a in min_dfa.alphabet])) for s in group])
                 same = dict([(s, dict([(s, True)
                        for s in group])) for s in group])
                 marked = dict([(s, False) for s in group])
                 for s1 in group:        # Pass 1, judge whether in same group
                     for s2 in group:    # for every pair of states in group.
-                        for a in self.alphabet:
+                        for a in min_dfa.alphabet:
                             for check_group in partition:
                                 if len(dest[s1][a] & check_group) != \
                                    len(dest[s2][a] & check_group):
