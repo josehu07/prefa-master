@@ -6,19 +6,20 @@ Presentation tool for Regular Expressions and Finite Automatas.
 
 ### Functions Established
 1. Read and Analyze Regular Expressions
-    - Construct and show the syntax tree structure of the RE.
+    - **Construct and show the syntax tree structure of the RE**.
     - Do position number marking.
-    - Extended RE symbols and notations.
+    - **Extended RE** symbols and notations.
 2. Build Finite Automatas
-    - Build NFA / DFA from an RE or a formatted source file.
+    - **Build NFA / DFA** from an RE or a formatted source file.
     - Conversion from NFA to DFA using *Subset Construction*.
-    - DFA minimization
+    - **DFA minimization**.
 3. Finite Automatas Display.
     - Show an FA in the form of pretty formatted transition table.
-    - Simulate the checking process on a given string, and get the result.
+    - **Simulate the checking proces**s on a given string, and get the result.
+    - **Display the FA structure in GUI automatically**.
 
 ### Current Version
-[ ver 1.1.0 ]
+Beta: [ ver 2.2.0 ]
 
 ### Authors
 - Authors: Jose, Robert & King
@@ -32,6 +33,11 @@ Install with `pip3`. The package name is `prefa` (all lower cases).
 pip3 install prefa
 ```
 Then you can `import` and use this package in *Python3*.
+
+Notice that `prefa` requires dependency on the following packages:
+
+- `networkx` (Tested with ver 2.2)
+- `matplotlib.pyplot` (Tested with ver 3.0.1)
 
 ## Tutorial
 
@@ -89,10 +95,11 @@ This *pREFA* package can be imported as name `prefa`, and it contains the follow
 1. `ere`: Basic Regular Expressions
 2. `dfa`: Deterministic Finite Automata construction
 3. `nfa`: Non-deterministic Finite Automata construction
+4. `pgui`: GUI support for displaying FAs
 
 #### Regular Expressions
 To construct a Regular Expression from a string, and display its structure, do:
-```
+```python
 >>> from prefa import ere
 >>> rexpr = ere.Regex('(~|a)bc*e')
 >>> print(rexpr)
@@ -129,7 +136,7 @@ Augmented: (a-(a)*-((a|~)|~)-((0|1|2)|~))-#
 
 #### NFAs
 To generate a Non-deterministic Finite Automata and show its transition table, you can do so from a source file, or a `Regex` instance:
-```
+```python
 >>> from prefa import nfa
 >>> my_nfa = nfa.NFiniteAutomata('input/NFA')
 >>> print(my_nfa)
@@ -154,7 +161,7 @@ sf         -        -        -        -        -   a
 
 #### DFAs
 To generate a Deterministic Finite Automata and show its transition table, you can do so from a source file, a `Regex` instance, or an `NFiniteAutomata` instance (here happens NFA to DFA conversion):
-```
+```python
 >>> from prefa import dfa
 >>> my_dfa = dfa.DFiniteAutomata('input/DFA')
 >>> print(my_dfa)
@@ -187,7 +194,7 @@ S4    -   -   -   -   a
 
 #### DFA Minimization
 To minimize a DFA, do:
-```
+```python
 >>> my_dfa = DFiniteAutomata(Regex('(a|~)*b*a|ba'))
 >>> min_dfa = my_dfa.minimalDFA()
 >>> print(min_dfa)
@@ -201,7 +208,7 @@ S3   S1  S2   i
 
 #### Check Simulation
 To simulate the checking process of a Finite Automata on a given input string, do (can simulate on both DFAs or NFAs):
-```
+```python
 >>> print(min_DFA.simulate('aaaabba'))
 True
 >>> result = min_DFA.simulate('aabbbaba', verbose=True)   # Set `verbose` to show details step by step
@@ -217,6 +224,14 @@ True
 >>> print(result)
 False
 ```
+
+#### GUI display
+To display the structure of a Finite Automata in GUI, do (this functionality requires dependency on module `matplotlib.pyplot` and `networkx`):
+```python
+>>> my_dfa = dfa.DFiniteAutomata(ere.Regex('0*(1|10|100)*1'))
+>>> drawer = FADrawer(my_dfa).staticShow()
+```
+This will automatically produce a GUI display in a popping-out `pyplot` window which shows the structure of the FA. Try it ;)
 
 ## Documentation
 All the source codes are well-documented in the standard *Google Python Standard*. Therefore, for further informations on module contents and their usage, simply use the `help()` function in Python3, or any other *docstring* extraction tools.

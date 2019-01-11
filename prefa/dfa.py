@@ -15,7 +15,7 @@ class DFiniteAutomata(fa.FiniteAutomata):
         table      - dict, the transition table
         alphabet   - list, alphabet in sorted order
         states     - list, list of all states in sorted order
-    """ 
+    """
 
     def __init__(self, input):
         if type(input) == str:                  # 1. Input from source file
