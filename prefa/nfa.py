@@ -1,5 +1,5 @@
-from prefa import fa, re
-# import fa, re
+# from prefa import fa, ere
+import fa, ere
 
 class NFiniteAutomata(fa.FiniteAutomata):
     """Non-determinsitic Finite Automata child class.
@@ -154,11 +154,11 @@ class NFiniteAutomata(fa.FiniteAutomata):
 if __name__ == '__main__':
     print(NFiniteAutomata('../input/NFA'))
     
-    rexpr = re.Regex('(a|~)bc*')
+    rexpr = ere.Regex('(a|~)bc*')
     print(rexpr)
     print(NFiniteAutomata(rexpr))
 
-    my_nfa = NFiniteAutomata(re.Regex('[a-c]+b*|a'))
+    my_nfa = NFiniteAutomata(ere.Regex('[a-c]+b*|a'))
     print(my_nfa)
     print(my_nfa.simulate('acbabbb', verbose=True))
     print(my_nfa.simulate('ad'))

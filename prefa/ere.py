@@ -1,5 +1,5 @@
-from prefa import bintree
-# import bintree
+# from prefa import bintree
+import bintree
 
 class Regex(object):
     """Class of a Regular Expression.

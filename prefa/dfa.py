@@ -1,6 +1,6 @@
-from prefa import fa, re, nfa
+# from prefa import fa, ere, nfa
 from copy import deepcopy
-# import fa, re, nfa
+import fa, ere, nfa
 
 class DFiniteAutomata(fa.FiniteAutomata):
     """Determinstic Finite Automata child class.
@@ -287,7 +287,7 @@ if __name__ == '__main__':
     print(DFiniteAutomata('../input/DFA'))
     print(DFiniteAutomata(nfa.NFiniteAutomata('../input/NFA')))
 
-    rexpr = re.Regex('(a|~)*b*a|ba')
+    rexpr = ere.Regex('(a|~)*b*a|ba')
     print(rexpr)
     print(DFiniteAutomata(rexpr))
 

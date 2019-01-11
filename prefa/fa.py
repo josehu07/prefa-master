@@ -104,6 +104,26 @@ class FiniteAutomata(object):
         # Return the joined string
         return string
 
+    def getRole(self, state):
+        """Get role of a state.
+
+        Query for the role of a state string.
+
+        Args:
+            state - str, state string to query
+
+        Returns:
+            role - str, the role of the state, see below
+        """
+        if state == self.initial:
+            return 'initial'
+        elif state in self.acceptings:
+            return 'accepting'
+        elif state in self.states:
+            return 'normal'
+        else:
+            return 'outlaw'
+
     def move(self, S, a):
         """Performs a transition move.
 

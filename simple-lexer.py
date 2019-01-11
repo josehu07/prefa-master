@@ -1,4 +1,4 @@
-from prefa import dfa, re
+from prefa import dfa, ere
 
 class Lexer(object):
     """Simple example of a toy lexer.
@@ -8,7 +8,7 @@ class Lexer(object):
     """
 
     def __init__(self, rules):
-        self.recognizers = dict([(r, dfa.DFiniteAutomata(re.Regex(rules[r])) \
+        self.recognizers = dict([(r, dfa.DFiniteAutomata(ere.Regex(rules[r])) \
                                      .minimalDFA()) for r in rules])
 
     def tokenize(self, input_str):

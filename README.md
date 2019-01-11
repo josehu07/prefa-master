@@ -86,16 +86,15 @@ q3         -        -       q3        -   a
 ### Use as Python Library
 This *pREFA* package can be imported as name `prefa`, and it contains the following modules (so use `from prefa import [MOD]` to import the modules you need):
 
-1. `re`: Basic Regular Expressions
-2. `fa`: Finite Automata prototype
-3. `dfa`: Deterministic Finite Automata construction
-4. `nfa`: Non-deterministic Finite Automata construction
+1. `ere`: Basic Regular Expressions
+2. `dfa`: Deterministic Finite Automata construction
+3. `nfa`: Non-deterministic Finite Automata construction
 
 #### Regular Expressions
 To construct a Regular Expression from a string, and display its structure, do:
 ```
->>> from prefa import re
->>> rexpr = re.Regex('(~|a)bc*e')
+>>> from prefa import ere
+>>> rexpr = ere.Regex('(~|a)bc*e')
 >>> print(rexpr)
 Original:  (~|a)bc*e
 Augmented: ((~|a)-b-c*-e)-#
@@ -111,7 +110,7 @@ Augmented: ((~|a)-b-c*-e)-#
  /  \
 ~   1,a
 
->>> rexpr = re.Regex('a+(a|~)?[0-2]?')  # Extended RE notations are also supported.
+>>> rexpr = ere.Regex('a+(a|~)?[0-2]?')  # Extended RE notations are also supported.
 >>> print(rexpr)
 Original:  a+(a|~)?[0-2]?
 Augmented: (a-(a)*-((a|~)|~)-((0|1|2)|~))-#
