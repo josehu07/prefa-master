@@ -133,6 +133,8 @@ class Regex(object):
         # be added.
         self.expr, self.alphabet = '', []
         for c in re_string:
+            if c.isspace():
+                continue
             if c not in '()|*' and c not in self.alphabet:
                 self.alphabet.append(c)
             if c not in ')|*' and len(self.expr) > 0 and \
@@ -176,7 +178,7 @@ class Regex(object):
         return 'Regex({})'.format(self.expr)
 
 if __name__ == '__main__':
-    print(Regex('(~|a)bc*e'))
+    print(Regex('(~|a)b c*e'))
     print(Regex('(a|e)bc*'))
     print([Regex('a|c'), Regex('(0|1)*')])
     print(Regex('a+(a|~)?[0-2]?'))

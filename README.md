@@ -147,7 +147,7 @@ q1        q1  {q2,q3}        -        -
 q2   {q1,q3}       q2        -        -   
 q3         -        -       q3        -   a
 
->>> my_nfa = nfa.NFiniteAutomata(Regex('(~|a)bc*e'))
+>>> my_nfa = nfa.NFiniteAutomata(ere.Regex('(~|a)bc*e'))
 >>> print(my_nfa)
            a        b        c        e        ~
 s0        s1        -        -        -       s1   i
@@ -174,7 +174,7 @@ S3   S3  S2   -
 S4    -   -  S4   a
 S5   S1  S5   -   
 
->>> my_dfa = dfa.DFiniteAutomata(Regex('(~|a)bc*e'))
+>>> my_dfa = dfa.DFiniteAutomata(ere.Regex('(~|a)bc*e'))
 >>> print(my_dfa)
       a   b   c   e 
 S0   S1  S2   -   -   i
@@ -196,7 +196,7 @@ S4    -   -   -   -   a
 #### DFA Minimization
 To minimize a DFA, do:
 ```python
->>> my_dfa = DFiniteAutomata(Regex('(a|~)*b*a|ba'))
+>>> my_dfa = dfa.DFiniteAutomata(ere.Regex('(a|~)*b*a|ba'))
 >>> min_dfa = my_dfa.minimalDFA()
 >>> print(min_dfa)
       a   b 
@@ -229,8 +229,9 @@ False
 #### GUI display
 To display the structure of a Finite Automata in GUI, do (this functionality requires dependency on module `matplotlib.pyplot` and `networkx`):
 ```python
+>>> from prefa import pgui
 >>> my_dfa = dfa.DFiniteAutomata(ere.Regex('0*(1|10|100)*1'))
->>> drawer = FADrawer(my_dfa).staticShow()
+>>> pgui.FADrawer(my_dfa).staticShow()
 ```
 This will automatically produce a GUI display in a popping-out `pyplot` window which shows the structure of the FA. Try it ;)
 
