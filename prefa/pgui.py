@@ -15,6 +15,9 @@ class FADrawer(object):
         trans_dict - dict, the edges dict, containing all state pairs
         trans_list - list, the edges list, only containing existing edges
         Graph      - nx.MultiDiGraph, `NetworkX` multi-directed graph
+        acceptings - set , the set of accepting states
+        normals    - set , the set of all non-accepting states
+        to_bend    - list, list of state pairs where edges need bending
     """
 
     def __init__(self, input_fa):
@@ -29,23 +32,29 @@ class FADrawer(object):
         # Add dummy hyperinit node.
         self.trans_dict['start'] = {input_fa.initial: [' ']}
 
-        # Pack these things into the directed graph.
+        # Form the transition list and put all states and edges into the
+        # graph. Will record state pairs where edges need bending.
         for s in input_fa.states:
             for a in input_fa.alphabet:
                 for s_end in input_fa.table[s][a]:
                     self.trans_dict[s][s_end].append(a)
-        self.trans_list = []
+        self.trans_list, self.to_bend = [], []
         for s1 in self.trans_dict:
             for s2 in self.trans_dict[s1]:
                 if len(self.trans_dict[s1][s2]) > 0:
                     self.trans_list.append((s1, s2,
                                       {'syms': self.trans_dict[s1][s2]}))
+                    if s1 != 'start' and s1 != s2 and \
+                       len(self.trans_dict[s2][s1]) > 0:
+                        self.to_bend.append((s1, s2))
+
+        # Build the networkx graph.
         self.Graph = nx.DiGraph()  # Use directed graph.
         self.Graph.add_nodes_from(self.state_list)
         self.Graph.add_edges_from(self.trans_list)
 
         # Save extra infos for correct formatting.
-        self.acceptings = input_fa.acceptings
+        self.acceptings = list(input_fa.acceptings)
         self.normals = [s for s in input_fa.states if s not in self.acceptings]
 
     def staticShow(self):
@@ -73,6 +82,33 @@ class FADrawer(object):
             if output_str.endswith(','):
                 output_str = output_str[:-1].strip()
             return output_str
+
+        def needBending(start_x, end_x, start_y, end_y, state_dict, to_bend):
+            """Judger for whether and edge needs bending.
+
+            If an edge has a counterpart (whose endpoint equals to its
+            point, and the startpont equals to its endpoint), then both of
+            them needs to bend to their right side for the same angle, to
+            ensure no overlapping.
+
+            Args:
+                start_x    - float, x coordinate of startpoint
+                end_x      - float, x coordinate of endpoint
+                start_y    - float, y coordinate of startpoint
+                end_y      - float, y coordinate of endpoint
+                state_dict - dict, the dict recording state positions
+                to_bend    - previously generated pairs of bending edges
+
+            Returns:
+                Bool, True if needs bending, and False otherwise
+            """
+            for tup in to_bend:
+                start_x0, start_y0 = state_dict[tup[0]].get_position()
+                end_x0  , end_y0   = state_dict[tup[1]].get_position()
+                if (start_x == start_x0 and end_x == end_x0 and \
+                    start_y == start_y0 and end_y == end_y0):
+                    return True
+            return False
 
         # Fix the size of popping-out figure, therefore ensures a relatively
         # stable performance.
@@ -122,15 +158,21 @@ class FADrawer(object):
                                    ( end_x +0.03,  end_y ))
                 edge.set_connectionstyle('angle', angleA=-83, angleB=83,
                                          rad=90)
-            else:
+            elif needBending(start_x, end_x, start_y, end_y, state_dict,
+                             self.to_bend):
                 edge.set_connectionstyle('arc3', rad=0.2)
 
         # Put transition symbols, and then update the symbol text's position
         # to match the arced edges. Updated according to the following
         # mathematical relationship:
         #
-        #   new_x = 0.5 * (start_x + end_x) + 0.7 * rad * (end_y - start_y)
-        #   new_y = 0.5 * (start_y + end_y) + 0.7 * rad * (start_x - end_x)
+        # For bent edges:
+        #   new_x = 0.5 * (start_x + end_x) + rad * (end_y - start_y)
+        #   new_y = 0.5 * (start_y + end_y) + rad * (start_x - end_x)
+        #
+        # For straight edges:
+        #   new_x = 0.5 * (start_x + end_x) + 0.5 * rad * (end_y - start_y)
+        #   new_y = 0.5 * (start_y + end_y) + 0.5 * rad * (start_x - end_x)
         #
         # A special case is for self loops. Since self loops are forced to
         # be a loop downside the state, so force the label to have a
@@ -142,9 +184,13 @@ class FADrawer(object):
             end_x  , end_y   = state_dict[tup[1]].get_position()
             if start_x == end_x and start_y == end_y:
                 new_x, new_y = start_x, start_y - 0.3
+            elif needBending(start_x, end_x, start_y, end_y, state_dict,
+                             self.to_bend):
+                new_x = (start_x + end_x) / 2. + 0.2 * (end_y - start_y)
+                new_y = (start_y + end_y) / 2. + 0.2 * (start_x - end_x)
             else:
-                new_x = (start_x + end_x) / 2. + 0.14 * (end_y - start_y)
-                new_y = (start_y + end_y) / 2. + 0.14 * (start_x - end_x)
+                new_x = (start_x + end_x) / 2. + 0.1 * (end_y - start_y)
+                new_y = (start_y + end_y) / 2. + 0.1 * (start_x - end_x)
             trans_dict[tup].set_position((new_x, new_y))
             trans_dict[tup].set_bbox(dict(alpha=0.3, color='#e6e6e6', linewidth=0))
             trans_dict[tup].set_text(boreStr(self.trans_dict[tup[0]][tup[1]]))
