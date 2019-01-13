@@ -167,8 +167,8 @@ class FADrawer(object):
         # mathematical relationship:
         #
         # For bent edges:
-        #   new_x = 0.5 * (start_x + end_x) + rad * (end_y - start_y)
-        #   new_y = 0.5 * (start_y + end_y) + rad * (start_x - end_x)
+        #   new_x = 0.5 * (start_x + end_x) + 0.7 * rad * (end_y - start_y)
+        #   new_y = 0.5 * (start_y + end_y) + 0.7 * rad * (start_x - end_x)
         #
         # For straight edges:
         #   new_x = 0.5 * (start_x + end_x) + 0.5 * rad * (end_y - start_y)
@@ -186,11 +186,11 @@ class FADrawer(object):
                 new_x, new_y = start_x, start_y - 0.3
             elif needBending(start_x, end_x, start_y, end_y, state_dict,
                              self.to_bend):
-                new_x = (start_x + end_x) / 2. + 0.2 * (end_y - start_y)
-                new_y = (start_y + end_y) / 2. + 0.2 * (start_x - end_x)
+                new_x = (start_x + end_x) / 2. + 0.14 * (end_y - start_y)
+                new_y = (start_y + end_y) / 2. + 0.14 * (start_x - end_x)
             else:
-                new_x = (start_x + end_x) / 2. + 0.1 * (end_y - start_y)
-                new_y = (start_y + end_y) / 2. + 0.1 * (start_x - end_x)
+                new_x = (start_x + end_x) / 2. + 0.1  * (end_y - start_y)
+                new_y = (start_y + end_y) / 2. + 0.1  * (start_x - end_x)
             trans_dict[tup].set_position((new_x, new_y))
             trans_dict[tup].set_bbox(dict(alpha=0.3, color='#e6e6e6', linewidth=0))
             trans_dict[tup].set_text(boreStr(self.trans_dict[tup[0]][tup[1]]))
