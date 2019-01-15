@@ -1,6 +1,8 @@
-#############################################################
-# COPIED FROM "binarytree" LIBRARY (ver 4.0.0) AND MODIFIED #
-#############################################################
+##############################################################################
+#         COPIED FROM "binarytree" LIBRARY (ver 4.0.0) AND MODIFIED          #
+# Author: Jose, Robert & King                                                #
+#  Date:  2019.01.15                                                         #
+##############################################################################
 
 def _buildTreeString(root, curr_index):
     """Recursively walk down the binary tree and build a pretty-print string.

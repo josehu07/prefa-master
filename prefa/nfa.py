@@ -1,3 +1,8 @@
+##############################################################################
+# Author: Jose, Robert & King                                                #
+#  Date:  2019.01.15                                                         #
+##############################################################################
+
 from prefa import fa, ere
 # import fa, ere
 
@@ -20,6 +25,10 @@ class NFiniteAutomata(fa.FiniteAutomata):
     def __init__(self, input):
         if type(input) == str:      # 1. Input from source file
             self._initFromFile(input)
+            if '~' not in self.alphabet:    # Add epsilon if has been omitted.
+                self.alphabet.append('~')
+                for s in self.table:
+                    self.table[s]['~'] = set()
         else:                       # 2. Input from a regex
             self._initFromRE(input)
 
