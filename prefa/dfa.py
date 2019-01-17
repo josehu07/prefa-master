@@ -135,7 +135,7 @@ class DFiniteAutomata(fa.FiniteAutomata):
         # Set and initialize the fields to prepare for construction.
         S0 = firstpos(input_regex.tree)
         DStates, marker, namer = [('S0', S0)], 0, 0
-        self.alphabet = input_regex.alphabet
+        self.alphabet = deepcopy(input_regex.alphabet)
         if '~' in self.alphabet:
             self.alphabet.remove('~')
         self.table = {}
@@ -179,7 +179,7 @@ class DFiniteAutomata(fa.FiniteAutomata):
         numbers for non-epsilon leaves.
 
         Args:
-            input_regex - str, input Regular Expression
+            input_nfa - NFiniteAutomata, NFA to convert from
         """
             
         # Set and initialize the fields to prepare for construction. Entirely
@@ -189,7 +189,8 @@ class DFiniteAutomata(fa.FiniteAutomata):
         self.table = {}
         self.states = []
         self.alphabet = deepcopy(input_nfa.alphabet)
-        self.alphabet.remove('~')
+        if '~' in self.alphabet:
+            self.alphabet.remove('~')
         self.initial, self.acceptings = 'S0', set()
 
         # Iteratively construct the transition table from INPUT_NFA infos.
@@ -230,6 +231,7 @@ class DFiniteAutomata(fa.FiniteAutomata):
 
         # Make a deep copy of self.
         min_dfa = deepcopy(self)
+        min_dfa.alphabet = deepcopy(self.alphabet)
 
         # Conduct minimization by repeatedly partitioning the state groups.
         # Initially there are two groups, one containing all accepting

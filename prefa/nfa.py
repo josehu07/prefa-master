@@ -4,6 +4,7 @@
 ##############################################################################
 
 from prefa import fa, ere
+from copy import deepcopy
 # import fa, ere
 
 class NFiniteAutomata(fa.FiniteAutomata):
@@ -148,7 +149,7 @@ class NFiniteAutomata(fa.FiniteAutomata):
 
         # Generate and complete table at root recursively, then collects all
         # other fields.
-        self.alphabet = input_regex.alphabet
+        self.alphabet = deepcopy(input_regex.alphabet)
         if '~' not in self.alphabet:
             self.alphabet.append('~')
         self.table = calcTable(input_regex.tree)[0]

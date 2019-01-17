@@ -274,17 +274,17 @@ class FADrawer(object):
         plt.show()
 
 if __name__ == '__main__':
-    # # rexpr = ere.Regex('0*10*10*10*')
-    # # rexpr = ere.Regex('(a|~)b*c[0-2]?')
-    # rexpr = ere.Regex('0*(1|10|100)*0*1')
-    # my_nfa = nfa.NFiniteAutomata(rexpr)
-    # FADrawer(my_nfa).staticShow()
+    # rexpr = ere.Regex('0*10*10*10*')
+    # rexpr = ere.Regex('(a|~)b*c[0-2]?')
+    rexpr = ere.Regex('0*(1|10|100)*0*1')
+    my_nfa = nfa.NFiniteAutomata(rexpr)
+    FADrawer(my_nfa).staticShow()
 
-    # my_dfa = dfa.DFiniteAutomata(my_nfa)
-    # FADrawer(my_dfa).staticShow()
+    my_dfa = dfa.DFiniteAutomata(my_nfa)
+    FADrawer(my_dfa).staticShow()
 
-    # min_dfa = my_dfa.minimalDFA()
-    # FADrawer(min_dfa).staticShow()
+    min_dfa = my_dfa.minimalDFA()
+    FADrawer(min_dfa).staticShow()
 
     my_nfa = nfa.NFiniteAutomata('../input/NFA2')
     my_dfa = dfa.DFiniteAutomata(my_nfa)
