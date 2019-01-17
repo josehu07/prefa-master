@@ -1,0 +1,7 @@
+      a   b   c 
+S0   S1  S2   -   i
+S1   S3  S2  S4   a
+S2   S1  S5  S4   a
+S3   S3  S2   -   
+S4    -   -  S4   a
+S5   S1  S5   -
