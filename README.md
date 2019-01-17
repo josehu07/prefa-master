@@ -19,7 +19,7 @@ Presentation tool for Regular Expressions and Finite Automatas.
     - **Display the FA structure in GUI automatically**.
 
 ### Current Version
-Beta: [ ver 2.3.1 ]
+Beta: [ ver 2.3.4 ]
 
 ### Authors
 - Authors: Jose, Robert & King
