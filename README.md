@@ -27,7 +27,7 @@ Beta: [ ver 2.3.4 ]
 
 ### Authors
 - Authors: Jose, Robert & King
-- Contact: huguanzhou123@sina.com
+- Contact: huguanzhou123@gmail.com
 
 ## Installation
 
