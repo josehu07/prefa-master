@@ -2,7 +2,7 @@
 Presentation tool for Regular Expressions and Finite Automatas.
 
 ![languages](https://img.shields.io/github/languages/count/josehu07/prefa-master.svg?color=green)
-![top-lang](https://img.shields.io/github/languages/top/josehu07/prefa-master.sv?color=blue)
+![top-lang](https://img.shields.io/github/languages/top/josehu07/prefa-master.svg?color=blue)
 ![code-size](https://img.shields.io/github/languages/code-size/josehu07/prefa-master.svg?color=lightgrey)
 
 ## Description
