@@ -1,9 +1,9 @@
 # *pREFA* Project
 Presentation tool for Regular Expressions and Finite Automatas.
 
-![languages](https://img.shields.io/github/languages/count/hgz12345ssdlh/prefa-master.svg?color=green)
-![top-lang](https://img.shields.io/github/languages/top/hgz12345ssdlh/prefa-master.sv?color=blue)
-![code-size](https://img.shields.io/github/languages/code-size/hgz12345ssdlh/prefa-master.svg?color=lightgrey)
+![languages](https://img.shields.io/github/languages/count/josehu07/prefa-master.svg?color=green)
+![top-lang](https://img.shields.io/github/languages/top/josehu07/prefa-master.sv?color=blue)
+![code-size](https://img.shields.io/github/languages/code-size/josehu07/prefa-master.svg?color=lightgrey)
 
 ## Description
 ***pREFA*** (*Presentation tools for Regular Expressions & Finite Automatas*) is a presentation tool (*pre*) for Regular Expressions (*RE*) and Finite Automatas (*FA*), aiming at RE / NFA / DFA construction, analysis & displaying.
